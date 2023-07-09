@@ -3,6 +3,7 @@ package pro.sky.springHW2.Collection.service;
 import org.springframework.stereotype.Service;
 import pro.sky.springHW2.Collection.exeption.EmployeeAlreadyAddedException;
 import pro.sky.springHW2.Collection.exeption.EmployeeNotFoundException;
+import pro.sky.springHW2.Collection.exeption.EmployeeStorageIsFullException;
 import pro.sky.springHW2.Collection.model.Employee;
 
 import java.util.ArrayList;
@@ -18,12 +19,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.employeeList = new ArrayList<>();
     }
 
-    private final static int MAX_SIZE = 2;
+    private final static int MAX_SIZE = 4;
 
     @Override
     public Employee add(String firstName, String lastName) {
         if (employeeList.size() >= MAX_SIZE) {
-            throw new EmployeeAlreadyAddedException("Массив сотрудников переполнен");
+            throw new EmployeeStorageIsFullException("Массив сотрудников переполнен");
         }
         Employee employee = new Employee(firstName, lastName);
         if (employeeList.contains(employee)) {
