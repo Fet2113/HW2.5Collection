@@ -18,12 +18,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.employeeList = new ArrayList<>();
     }
 
+    private final static int MAX_SIZE = 2;
 
     @Override
     public Employee add(String firstName, String lastName) {
+        if (employeeList.size() >= MAX_SIZE) {
+            throw new EmployeeAlreadyAddedException("Массив сотрудников переполнен");
+        }
         Employee employee = new Employee(firstName, lastName);
         if (employeeList.contains(employee)) {
-            throw new EmployeeAlreadyAddedException();
+            throw new EmployeeAlreadyAddedException("Такой сотрудник уже есть");
         }
         employeeList.add(employee);
         return employee;
@@ -36,7 +40,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeList.remove(employee);
             return employee;
         }
-        throw new EmployeeNotFoundException();
+        throw new EmployeeNotFoundException("Сотрудник не удален - не был найден в базе");
     }
 
     @Override
@@ -45,7 +49,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employeeList.contains(employee)) {
             return employee;
         }
-        throw new EmployeeNotFoundException();
+        throw new EmployeeNotFoundException("Такого сотрудника нет");
     }
 
     @Override
