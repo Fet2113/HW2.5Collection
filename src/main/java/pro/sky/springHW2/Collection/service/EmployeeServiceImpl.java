@@ -6,40 +6,38 @@ import pro.sky.springHW2.Collection.exeption.EmployeeNotFoundException;
 import pro.sky.springHW2.Collection.exeption.EmployeeStorageIsFullException;
 import pro.sky.springHW2.Collection.model.Employee;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final List<Employee> employeeList;
+    private final Map<String, Employee> employees;
 
     public EmployeeServiceImpl() {
-        this.employeeList = new ArrayList<>();
+        this.employees = new HashMap<>();
     }
+
 
     private final static int MAX_SIZE = 4;
 
     @Override
     public Employee add(String firstName, String lastName) {
-        if (employeeList.size() >= MAX_SIZE) {
+        if (employees.size() >= MAX_SIZE) {
             throw new EmployeeStorageIsFullException("Массив сотрудников переполнен");
         }
         Employee employee = new Employee(firstName, lastName);
-        if (employeeList.contains(employee)) {
+        if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeAlreadyAddedException("Такой сотрудник уже есть");
         }
-        employeeList.add(employee);
+        employees.put(employee.getFullName(), employee);
         return employee;
     }
 
     @Override
     public Employee remove(String firstName, String lastName) {
         Employee employee = new Employee(firstName, lastName);
-        if (employeeList.contains(employee)) {
-            employeeList.remove(employee);
-            return employee;
+        if (employees.containsKey(employee.getFullName())) {
+            return employees.remove(employee.getFullName());
         }
         throw new EmployeeNotFoundException("Сотрудник не удален - не был найден в базе");
     }
@@ -47,14 +45,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee find(String firstName, String lastName) {
         Employee employee = new Employee(firstName, lastName);
-        if (employeeList.contains(employee)) {
-            return employee;
+        if (employees.containsKey(employee.getFullName())) {
+            return employees.get(employee.getFullName());
         }
         throw new EmployeeNotFoundException("Такого сотрудника нет");
     }
 
     @Override
     public Collection<Employee> findCollection() {
-        return employeeList;
+        return Collections.unmodifiableCollection(employees.values());
     }
 }
