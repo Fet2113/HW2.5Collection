@@ -13,11 +13,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final Map<String, Employee> employees;
 
+
     public EmployeeServiceImpl() {
-        this.employees = new HashMap<>();
+        this.employees = new HashMap<>(Map.of(
+                "1", new Employee("Иван", "Иванов", 1000.0, 1),
+                "2", new Employee("Вася", "Пупкин", 1000.9, 1),
+        "3", new Employee("Семен", "Запупыркин", 10000.50, 1),
+        "4", new Employee("Пётр", "Петров", 5000.50, 2),
+        "5", new Employee("Илья", "Ильин", 7000.50, 3),
+        "6", new Employee("Джон", "Смит", 500.8, 3)));
     }
-
-
     private final static int MAX_SIZE = 4;
 
     @Override
