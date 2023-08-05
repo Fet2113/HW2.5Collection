@@ -1,6 +1,10 @@
 package pro.sky.springHW2.Collection.model;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Objects;
+
+import static org.apache.commons.lang3.StringUtils.*;
 
 public class Employee {
     private final String firstName;
@@ -9,8 +13,8 @@ public class Employee {
     private final int departmentId;
 
     public Employee(String firstName, String lastName, double salary, int departmentId) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstName = capitalize(firstName.toLowerCase());
+        this.lastName = capitalize(lastName.toLowerCase());
         this.salary = salary;
         this.departmentId = departmentId;
     }
@@ -54,5 +58,6 @@ public class Employee {
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 '}';
+
     }
 }
